@@ -104,6 +104,7 @@ class PasticheModel(nn.Module):
         x = self.conv_2(x, style_no)
         x = self.conv_3(x, style_no)
         
+        # TODO: Fix bug here. it is only use one resblock and updating it. Don't for loop
         for i in range(4): 
             x=self.res_block(x, style_no)
         

@@ -18,7 +18,10 @@ The implemtentation uses Pytorch to train a deep convolutional neural network to
 
 - [x] Implement the multi style transfer network
 - [] Save the model to an external location
-- [] remove left over training code from the notebook and put it into python files
-- [] create command to train instead of using the testing notebooks.
+- [x] remove left over training code from the notebook and put it into python files
+- [x] create command to train instead of using the testing notebooks.
 - [] create the "transfer learning" approach described in the paper to train new styles only using the `alpha` and `gamma` weights
+- [] Apply fine-tune approach
 - [] Implement a webcam feed version
+- [] refactor training code into class
+- [] Fix bug with resblock
