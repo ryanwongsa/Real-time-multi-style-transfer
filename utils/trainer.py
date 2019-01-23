@@ -43,7 +43,7 @@ def unnormalize_batch(batch):
     return (batch * n_std) + n_mean
 
 
-def train(vggfmodel, pastichemodel,dataloader,style_targets,optimizer, epoches, device,layers,content_layer,style_layers,model_dir,style_factor,num_styles, rand_style=True,style_choice=-1):
+def train(vggfmodel, pastichemodel,dataloader,style_targets,optimizer, epoches, device,layers,content_layer,style_layers,model_dir,style_factor,num_styles, style_images_dir, rand_style=True,style_choice=-1):
     pastichemodel = pastichemodel.train()
     step = 0
     step_show = 1000
@@ -88,6 +88,22 @@ def train(vggfmodel, pastichemodel,dataloader,style_targets,optimizer, epoches, 
             optimizer.step()
 
             if step%step_show==0:
+                test_org = unnormalize_batch(img)
+                test_org = test_org[0].cpu().detach().numpy()*255.0
+                test_org = np.moveaxis(test_org, 0, 2)
+                im_org = Image.fromarray(np.uint8(test_org))
+
+                test_img = output_temp[0].cpu().detach().numpy()*255.0
+                test_img = np.moveaxis(test_img, 0, 2)
+                im = Image.fromarray(np.uint8(test_img))
+
+                f, (ax1, ax2) = plt.subplots(1, 2, sharey=True,figsize=(20,20))
+                ax1.imshow(np.asarray(im_org))
+                ax1.axis('off')  
+                ax2.imshow(np.asarray(im))
+                ax2.axis('off')  
+                plt.title(style_images_dir[style_no])
+                plt.show()
                 torch.save(pastichemodel.state_dict(), model_dir+"pastichemodel-"+str(step)+".pth")
             step+=1
     torch.save(pastichemodel.state_dict(), model_dir+"pastichemodel-FINAL.pth")

@@ -94,7 +94,10 @@ class PasticheModel(nn.Module):
         self.upsample1 = Upsampling(128,64,3,1,(1,1),num_styles)
         self.upsample2 = Upsampling(64,32,3,1,(1,1),num_styles)
         
-        self.res_block = ResBlock(num_styles)
+        self.res_block1 = ResBlock(num_styles)
+        self.res_block2 = ResBlock(num_styles)
+        self.res_block3 = ResBlock(num_styles)
+        self.res_block4 = ResBlock(num_styles)
         
         self.conv_4 = CondConvolution(32, 3, 9, 4, (1,1),num_styles, False)
         
@@ -104,9 +107,11 @@ class PasticheModel(nn.Module):
         x = self.conv_2(x, style_no)
         x = self.conv_3(x, style_no)
         
-        # TODO: Fix bug here. it is only use one resblock and updating it. Don't for loop
-        for i in range(4): 
-            x=self.res_block(x, style_no)
+        
+        x=self.res_block1(x, style_no)
+        x=self.res_block2(x, style_no)
+        x=self.res_block3(x, style_no)
+        x=self.res_block4(x, style_no)
         
         x = self.upsample1(x, style_no)
         x = self.upsample2(x, style_no)
