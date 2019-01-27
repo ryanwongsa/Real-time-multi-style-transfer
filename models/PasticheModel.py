@@ -43,7 +43,7 @@ class CondConvolution(nn.Module):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
-    def forward(self, x, style_no):
+    def forward(self, x, style_no, style_no2=None, alpha=None):
         
         x = self.reflection2d(x)
         x = self.conv(x)
@@ -51,9 +51,13 @@ class CondConvolution(nn.Module):
         b,d,w,h =x.size()
         x = x.view(b,d,w*h)
         
-#         new_gamma = self.gamma[style_no].unsqueeze(-1).expand_as(x)
-#         new_beta = self.beta[style_no].unsqueeze(-1).expand_as(x)
-        x = (x*self.gamma[style_no].unsqueeze(-1).expand_as(x)+self.beta[style_no].unsqueeze(-1).expand_as(x)).view(b,d,w,h)
+        if alpha != None and style_no2!=None:
+            gamma = alpha * self.gamma[style_no] + (1 - alpha) * self.gamma[style_no2]
+            beta = alpha * self.beta[style_no] + (1 - alpha) * self.beta[style_no2]
+        else:
+            gamma = self.gamma[style_no]
+            beta = self.beta[style_no]
+        x = (x*gamma.unsqueeze(-1).expand_as(x)+beta.unsqueeze(-1).expand_as(x)).view(b,d,w,h)
         
         
         if self.act==True:
@@ -66,10 +70,10 @@ class ResBlock(nn.Module):
         self.res_conv1 = CondConvolution(128, 128, 3, 1, (1,1), num_styles)
         self.res_conv2 = CondConvolution(128, 128, 3, 1, (1,1), num_styles, False)
 
-    def forward(self, x, style_no):
+    def forward(self, x, style_no, style_no2, alpha):
         residual = x
-        out = self.res_conv1(x,style_no)
-        out = self.res_conv2(out,style_no)
+        out = self.res_conv1(x,style_no, style_no2, alpha)
+        out = self.res_conv2(out,style_no, style_no2, alpha)
         out += residual
         return out
     
@@ -79,9 +83,9 @@ class Upsampling(nn.Module):
         self.upsample = nn.Upsample(scale_factor=2, mode='nearest')
         self.conv = CondConvolution(input_filters, output_filters, kernel_size,padding,stride,num_styles) 
 
-    def forward(self, x,style_no):
+    def forward(self, x,style_no, style_no2, alpha):
         x = self.upsample(x)
-        x = self.conv(x, style_no)
+        x = self.conv(x, style_no, style_no2, alpha)
         return x
     
 class PasticheModel(nn.Module):
@@ -102,20 +106,20 @@ class PasticheModel(nn.Module):
         self.conv_4 = CondConvolution(32, 3, 9, 4, (1,1),num_styles, False)
         
         
-    def forward(self, x, style_no):
-        x = self.conv_1(x, style_no)
-        x = self.conv_2(x, style_no)
-        x = self.conv_3(x, style_no)
+    def forward(self, x, style_no, style_no2=None,alpha=None):
+        x = self.conv_1(x, style_no, style_no2,alpha)
+        x = self.conv_2(x, style_no, style_no2,alpha)
+        x = self.conv_3(x, style_no, style_no2,alpha)
         
         
-        x=self.res_block1(x, style_no)
-        x=self.res_block2(x, style_no)
-        x=self.res_block3(x, style_no)
-        x=self.res_block4(x, style_no)
+        x=self.res_block1(x, style_no, style_no2,alpha)
+        x=self.res_block2(x, style_no, style_no2,alpha)
+        x=self.res_block3(x, style_no, style_no2,alpha)
+        x=self.res_block4(x, style_no, style_no2,alpha)
         
-        x = self.upsample1(x, style_no)
-        x = self.upsample2(x, style_no)
+        x = self.upsample1(x, style_no, style_no2,alpha)
+        x = self.upsample2(x, style_no, style_no2,alpha)
         
-        x = self.conv_4(x, style_no)
+        x = self.conv_4(x, style_no, style_no2,alpha)
         x = F.sigmoid(x)
         return x
