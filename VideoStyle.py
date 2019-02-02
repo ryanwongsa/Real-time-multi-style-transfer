@@ -24,7 +24,7 @@ inference = Inferencer(pastichemodel,transform,device)
 inference.load_model_weights(model_save_dir)
 
 count_total = 0
-cap = cv2.VideoCapture('../thousand-miles.mp4')
+cap = cv2.VideoCapture('../video.mp4')
 choice = 0
 choice2 = 1
 percentage = 0

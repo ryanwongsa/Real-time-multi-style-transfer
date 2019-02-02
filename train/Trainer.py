@@ -43,7 +43,7 @@ class Trainer(object):
         self.num_styles = len(self.styletargets)
         
         self.mean = [0.485, 0.456, 0.406]
-        self.std=[0.229, 0.224, 0.225]   
+        self.std=[0.229, 0.224, 0.225]
         
     def normalize_batch(self, batch):
         n_mean = batch.new_tensor(self.mean).view(-1, 1, 1)
@@ -68,8 +68,11 @@ class Trainer(object):
         style_loss_dict = style_loss_dict.copy()
         mse_loss = torch.nn.MSELoss()
         self.pastichemodel = self.pastichemodel.train()
-        self.makedir(save_dir)
-        self.makedir(eval_set[2])
+        if save_dir!=None:
+            self.makedir(save_dir)
+        if eval_set!=None and len(eval_set)>2 and eval_set[2]!=None:
+            self.makedir(eval_set[2])
+            
         for i in range(epoch_start,epoches):
             step = 0
             pbar = tqdm(dataloader)
@@ -122,16 +125,16 @@ class Trainer(object):
                                 plt.imshow(np.asarray(res))
                                 plt.axis('off') 
                                 del res
-                        if eval_set[2]==None:
+                        if len(eval_set)<3 or eval_set[2]==None:
                             plt.show()
                         else:
                             plt.savefig(eval_set[2]+'/'+str(step)+".jpg", bbox_inches='tight')
                         self.pastichemodel = self.pastichemodel.train()
                     if save_dir != None:
-                        torch.save(self.pastichemodel.state_dict(), save_dir+"pastichemodel_"+str(i)+"-"+str(step)+".pth")
+                        torch.save(self.pastichemodel.state_dict(), save_dir+"/pastichemodel_"+str(i)+"-"+str(step)+".pth")
                 step+=1
             if save_dir != None:
-                torch.save(self.pastichemodel.state_dict(), save_dir+"pastichemodel_"+str(i)+"-FINAL.pth")
+                torch.save(self.pastichemodel.state_dict(), save_dir+"/pastichemodel_"+str(i)+"-FINAL.pth")
         return content_loss_dict, style_loss_dict
     
     def set_mode(self,mode):

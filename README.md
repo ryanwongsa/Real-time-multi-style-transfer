@@ -13,6 +13,18 @@ conda create --name <env> --file requirements.txt
 
 The implemtentation uses Pytorch to train a deep convolutional neural network to be able to learn multiple art styles. The code implementation might not be an exact match of the paper by Vincent Dumoulin et al. as the training details an exact loss hyperparameters were not fully described. Each feature map in the network has two weights (`alpha` and `gamma`) dedicated to each style.
 
+## Usage
+
+Download the training dataset, using the coco dataset but can use any image dataset:
+```
+sh dataset/download_coco.sh
+```
+
+Training from scratch:
+```
+python multistyle_transfer_net.py --dataset-images {dataset_images} --styles-dir {styles_dir} --num-workers {num_workers} --model-dir {model_dir} --eval-image-dir {eval_image_dir} 
+```
+
 
 ## TODO
 
@@ -25,4 +37,4 @@ The implemtentation uses Pytorch to train a deep convolutional neural network to
 - [x] Implement a webcam feed version
 - [x] refactor training code into class
 - [x] Fix bug with resblock
-- [] Document code
+- [x] Document code
