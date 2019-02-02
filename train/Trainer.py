@@ -62,13 +62,14 @@ class Trainer(object):
             pass
             
             
-    def train(self, dataloader, optimizer, epoches, save_dir=None, style_factor=10000000000, content_factor=100000,epoch_start=0, save_step=1000, content_loss_dict=defaultdict(list),style_loss_dict=defaultdict(list), eval_set=None):
+    def train(self, dataloader, optimizer, epoches, save_dir=None, style_factor=1000000, content_factor=1,epoch_start=0, save_step=1000, content_loss_dict=defaultdict(list),style_loss_dict=defaultdict(list), eval_set=None):
         
         content_loss_dict = content_loss_dict.copy()
         style_loss_dict = style_loss_dict.copy()
         mse_loss = torch.nn.MSELoss()
         self.pastichemodel = self.pastichemodel.train()
         self.makedir(save_dir)
+        self.makedir(eval_set[2])
         for i in range(epoch_start,epoches):
             step = 0
             pbar = tqdm(dataloader)
@@ -84,7 +85,6 @@ class Trainer(object):
                 output = self.normalize_batch(output_temp)
                 output_features = self.featuremodel.get_features(output)
 
-#                 content_loss = torch.mean((features[self.contentlayer] - output_features[self.contentlayer])**2,(1,2,3))
                 content_loss = mse_loss(features[self.contentlayer],output_features[self.contentlayer])
 
                 style_loss = 0.0
@@ -93,7 +93,6 @@ class Trainer(object):
                     output_gram = self.featuremodel.gram_batch_matrix(output_feature)
 
                     style_gram = self.styletargets[style_no][value]
-#                     style_loss += self.stylelayers[value]*torch.mean(((output_gram - style_gram)**2),(1,2))
                     style_loss += self.stylelayers[value]*mse_loss(output_gram, style_gram[:len(img_ids), :, :])
                
                 
@@ -123,7 +122,10 @@ class Trainer(object):
                                 plt.imshow(np.asarray(res))
                                 plt.axis('off') 
                                 del res
-                        plt.show()
+                        if eval_set[2]==None:
+                            plt.show()
+                        else:
+                            plt.savefig(eval_set[2]+'/'+str(step)+".jpg", bbox_inches='tight')
                         self.pastichemodel = self.pastichemodel.train()
                     if save_dir != None:
                         torch.save(self.pastichemodel.state_dict(), save_dir+"pastichemodel_"+str(i)+"-"+str(step)+".pth")
@@ -148,8 +150,6 @@ class Trainer(object):
         self.pastichemodel.load_state_dict(torch.load(dir_model))
         
     def transfer_learn_model(self, pastiche_model, dir_model, style_targets):
-        
-        
         prev_state_dict = torch.load(dir_model)
         
         self.pastichemodel = pastiche_model

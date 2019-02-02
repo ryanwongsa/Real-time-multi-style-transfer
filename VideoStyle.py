@@ -31,8 +31,6 @@ percentage = 0
 
 frame_width = int(912)
 frame_height = int(512)
-# print(frame_width,frame_height)
-# Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
 out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width,frame_height))
 
 
@@ -42,7 +40,6 @@ while(cap.isOpened()):
     if ret == True:
         print(count_total)
         cv2_im = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-#         print(cv2_im.shape)
         pil_im = Image.fromarray(cv2_im)
         res_im = inference.eval_image(pil_im,choice,choice2,percentage)
         open_cv_image = cv2.cvtColor(np.array(res_im), cv2.COLOR_RGB2BGR)
