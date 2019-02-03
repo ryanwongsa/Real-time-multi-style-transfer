@@ -72,7 +72,7 @@ class Trainer(object):
             self.makedir(save_dir)
         if eval_set!=None and len(eval_set)>2 and eval_set[2]!=None:
             self.makedir(eval_set[2])
-            
+        cu_step = 0    
         for i in range(epoch_start,epoches):
             step = 0
             pbar = tqdm(dataloader)
@@ -118,17 +118,18 @@ class Trainer(object):
                         self.pastichemodel = self.pastichemodel.eval()
                         division = int(self.num_styles**0.5)
                         plt.figure(figsize=(20,20))
-                        for i in range(division):
+                        for a in range(division):
                             for j in range(division):
-                                plt.subplot(division, division, i*division+j+1, frameon=False)
-                                res = self.eval_image(eval_set[0],eval_set[1],i*division+j)
+                                plt.subplot(division, division, a*division+j+1, frameon=False)
+                                res = self.eval_image(eval_set[0],eval_set[1],a*division+j)
                                 plt.imshow(np.asarray(res))
                                 plt.axis('off') 
                                 del res
                         if len(eval_set)<3 or eval_set[2]==None:
                             plt.show()
                         else:
-                            plt.savefig(eval_set[2]+'/'+str(step)+".jpg", bbox_inches='tight')
+                            plt.savefig(eval_set[2]+'/'+str(cu_step)+".jpg", bbox_inches='tight')
+                        cu_step+=1
                         self.pastichemodel = self.pastichemodel.train()
                     if save_dir != None:
                         torch.save(self.pastichemodel.state_dict(), save_dir+"/pastichemodel_"+str(i)+"-"+str(step)+".pth")
