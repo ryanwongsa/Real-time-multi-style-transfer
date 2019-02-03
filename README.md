@@ -30,11 +30,15 @@ Inference
 python inferstylenet.py --input-image ../bird.jpg --model-save-dir style16/pastichemodel-FINAL.pth --style-choice 4 --style-choice-2 5 --style-factor 0.5
 ```
 
+Pretrained model and styles available [here](https://drive.google.com/drive/folders/1BFszn2tQdrVPeovpu5utY6XpQ4gkA96_?usp=sharing) 
+
+There are 16 styles in the pretrained model. It is possible to use transfer learning to only learn the `alpha` and `gamma` weights as described in the paper but results seemed to have a similar convergence rate without transfer learning. The transfer learning method is available in `train/Trainer.py` using the method `transfer_learn_model()`. 
+
 
 ## TODO
 
 - [x] Implement the multi style transfer network
-- [ ] Save the model to an external location
+- [x] Save the model to an external location
 - [x] remove left over training code from the notebook and put it into python files
 - [x] create command to train instead of using the testing notebooks.
 - [x] create the "transfer learning" approach described in the paper to train new styles only using the `alpha` and `gamma` weights
