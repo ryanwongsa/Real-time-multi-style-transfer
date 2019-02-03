@@ -22,14 +22,19 @@ sh dataset/download_coco.sh
 
 Training from scratch:
 ```
-python multistyle_transfer_net.py --dataset-images {dataset_images} --styles-dir {styles_dir} --num-workers {num_workers} --model-dir {model_dir} --eval-image-dir {eval_image_dir} 
+python trainstylenet.py --dataset-images {dataset_images} --styles-dir {styles_dir} --num-workers {num_workers} --model-dir {model_dir} --eval-image-dir {eval_image_dir} 
+```
+
+Inference
+```
+python inferstylenet.py --input-image ../bird.jpg --model-save-dir style16/pastichemodel-FINAL.pth --style-choice 4 --style-choice-2 5 --style-factor 0.5
 ```
 
 
 ## TODO
 
 - [x] Implement the multi style transfer network
-- [] Save the model to an external location
+- [ ] Save the model to an external location
 - [x] remove left over training code from the notebook and put it into python files
 - [x] create command to train instead of using the testing notebooks.
 - [x] create the "transfer learning" approach described in the paper to train new styles only using the `alpha` and `gamma` weights
@@ -38,3 +43,4 @@ python multistyle_transfer_net.py --dataset-images {dataset_images} --styles-dir
 - [x] refactor training code into class
 - [x] Fix bug with resblock
 - [x] Document code
+- [ ] Fix windows only dataloader problem
