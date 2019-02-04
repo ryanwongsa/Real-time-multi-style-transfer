@@ -2,8 +2,16 @@
 
 Implementation in Pytorch of an adaption of the paper [A LEARNED REPRESENTATION FOR ARTISTIC STYLE](https://arxiv.org/pdf/1610.07629.pdf) (Vincent Dumoulin & Jonathon Shlens & Manjunath Kudlur).
 
+<img src = 'sample/sample.jpg'>
+
 #### Results on 16 different styles during training on an unseen image captured every 1000 steps for 2 epochs
 <img src = 'sample/movie.gif' width = '512px' height = '512px'>
+
+
+
+#### Click the image below for a Youtube video link of transitions between styles:
+<a href="https://www.youtube.com/watch?v=p1RYBBEYafA" target="_blank"><img src="sample/linkToVideo.jpg" 
+alt="Youtube sample" width="256" border="10" /></a>
 
 ## Requirements
 
