@@ -2,7 +2,7 @@
 
 Implementation in Pytorch of an adaption of the paper [A LEARNED REPRESENTATION FOR ARTISTIC STYLE](https://arxiv.org/pdf/1610.07629.pdf) (Vincent Dumoulin & Jonathon Shlens & Manjunath Kudlur).
 
-### Results on an unseen image captured every 1000 steps for 2 epochs
+#### Results on 16 different styles during training on an unseen image captured every 1000 steps for 2 epochs
 <img src = 'sample/movie.gif' width = '512px' height = '512px'>
 
 ## Requirements
