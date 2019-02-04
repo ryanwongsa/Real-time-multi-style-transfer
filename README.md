@@ -2,6 +2,8 @@
 
 Implementation in Pytorch of an adaption of the paper [A LEARNED REPRESENTATION FOR ARTISTIC STYLE](https://arxiv.org/pdf/1610.07629.pdf) (Vincent Dumoulin & Jonathon Shlens & Manjunath Kudlur).
 
+<img src = 'samples/movie.gif' alt = 'Training Process' width = '512px' height = '512px'>
+
 ## Requirements
 
 Conda 3 installation of python 3
