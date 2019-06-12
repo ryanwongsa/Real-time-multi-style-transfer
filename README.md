@@ -58,4 +58,4 @@ There are 16 styles in the pretrained model. It is possible to use transfer lear
 - [x] refactor training code into class
 - [x] Fix bug with resblock
 - [x] Document code
-- [ ] Fix windows only dataloader problem
+- [ ] Convert to ONNX model
