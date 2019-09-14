@@ -1,6 +1,10 @@
 # Real Time Multi Style Transfer in Pytorch
 
-Implementation in Pytorch of an adaption of the paper [A LEARNED REPRESENTATION FOR ARTISTIC STYLE](https://arxiv.org/pdf/1610.07629.pdf) (Vincent Dumoulin & Jonathon Shlens & Manjunath Kudlur).
+Demo [<img src="https://colab.research.google.com/assets/colab-badge.svg" align="center">](https://colab.research.google.com/github/ryanwongsa/Real-time-multi-style-transfer/blob/master/Real_time_multi_style_transfer_demo.ipynb)
+
+
+
+My implementation in Pytorch of an adaption of the paper [A LEARNED REPRESENTATION FOR ARTISTIC STYLE](https://arxiv.org/pdf/1610.07629.pdf) (Vincent Dumoulin & Jonathon Shlens & Manjunath Kudlur).
 
 <img src = 'sample/sample.jpg'>
 
@@ -22,7 +26,7 @@ conda create --name <env> --file requirements.txt
 
 ## Implementation Details
 
-The implemtentation uses Pytorch to train a deep convolutional neural network to be able to learn multiple art styles. The code implementation might not be an exact match of the paper by Vincent Dumoulin et al. as the training details an exact loss hyperparameters were not fully described. Each feature map in the network has two weights (`alpha` and `gamma`) dedicated to each style.
+The implemtentation uses Pytorch to train a deep convolutional neural network to be able to learn multiple art styles. The code implementation might not be an exact match of the paper by Vincent Dumoulin et al. as the training details and exact loss hyperparameters were not fully described. Each feature map in the network has two weights (`alpha` and `gamma`) dedicated to each style.
 
 ## Usage
 
@@ -59,3 +63,4 @@ There are 16 styles in the pretrained model. It is possible to use transfer lear
 - [x] Fix bug with resblock
 - [x] Document code
 - [ ] Convert to ONNX model
+- [x] Create Colab prediction implementation
